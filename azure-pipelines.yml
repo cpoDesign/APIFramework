@@ -17,3 +17,9 @@ steps:
   inputs:
     command: restore
     projects: '**/*.csproj'
+
+- script: dotnet test **/*CPODesign.ApiFramework.Tests.Unit.csproj --logger trx
+- task: PublishTestResults@2
+  inputs:
+    testRunner: VSTest
+    testResultsFiles: '**/*.trx'
