@@ -24,10 +24,11 @@ steps:
     testRunner: VSTest
     testResultsFiles: '**/*.trx'
 
-- task: DotNetCoreCLI@2  /p:PackageVersion=1.0.$(Build.BuildId)
+- task: DotNetCoreCLI@2
   inputs:
     command: pack
     projects: '**/*ApiFramework.csproj'
+    packageVersion:'1.0.$(Build.BuildId)'
 
 
 - task: PublishBuildArtifacts@1
