@@ -33,3 +33,4 @@ steps:
   inputs:
     pathtoPublish: '$(Build.ArtifactStagingDirectory)'
     artifactName: drop
+    contents: '**/$(BuildConfiguration)/**/?(*.nupkg)'
