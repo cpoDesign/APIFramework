@@ -17,3 +17,14 @@ steps:
   inputs:
     command: restore
     projects: '**/*.csproj'
+
+- script: dotnet test **/*.Tests.Unit.csproj --logger trx
+- task: PublishTestResults@2
+  inputs:
+    testRunner: VSTest
+    testResultsFiles: '**/*.trx'
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: pack
+    projects: '**/*ApiFramework.csproj'
