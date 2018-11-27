@@ -28,7 +28,7 @@ steps:
   inputs:
     command: pack
     projects: '**/*ApiFramework.csproj'
-    packageVersion:'1.0.$(Build.BuildId)'
+   # packageVersion:'1.0.$(Build.BuildId)'
 
 
 - task: PublishBuildArtifacts@1
