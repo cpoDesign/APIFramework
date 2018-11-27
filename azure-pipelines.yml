@@ -18,8 +18,8 @@ steps:
     command: restore
     projects: '**/*.csproj'
 
-- task: DotNetCoreCLI@2
+- script: dotnet test **/*.Tests.Unit.csproj --logger trx
+- task: PublishTestResults@2
   inputs:
-    command: test
-    projects: '**/*Tests/*.csproj'
-    arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'
+    testRunner: VSTest
+    testResultsFiles: '**/*.trx'
