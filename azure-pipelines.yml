@@ -25,16 +25,21 @@ steps:
     testResultsFiles: '**/*.trx'
 
 
-- script: dotnet pack --configuration $(buildConfiguration) /p:PackageVersion='1.$(Build.BuildId).0'
+- script: dotnet pack 
+- task: DotNetCoreCLI@2
   inputs:
-    projects: '**/*ApiFramework.csproj'
+      command: pack
+      projects: '**/*ApiFramework.csproj'
+      buildProperties: /p:PackageVersion='1..0'
+      requestedMajorVersion: 1
+      requestedMinorVersion: $(Build.BuildId)
+      requestedPatchVersion: 0
 
-
-#- task: DotNetCoreCLI@2
-#  inputs:
+# - task: DotNetCoreCLI@2
+#   inputs:
 #    command: pack
 #    projects: '**/*ApiFramework.csproj'
-   # packageVersion:'1.0.$(Build.BuildId)'
+#    packageVersion:'1.0.$(Build.BuildId)'
 
 # NuGet
 # Restore, pack, or push NuGet packages, or run a NuGet command. Supports NuGet.org and authenticated feeds like Package Management and MyGet. Uses NuGet.exe and works with .NET Framework apps. For .NET Core and .NET Standard apps, use the .NET Core task.
