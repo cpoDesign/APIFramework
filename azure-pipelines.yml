@@ -14,21 +14,18 @@ steps:
   displayName: 'dotnet build $(buildConfiguration)'
 
 - task: DotNetCoreCLI@2
-  displayName: Restore nuget packages
   inputs:
     command: restore
     projects: '**/*.csproj'
 
 - script: dotnet test **/*.Tests.Unit.csproj --logger trx
 - task: PublishTestResults@2
-  displayName: run tests
   inputs:
     testRunner: VSTest
     testResultsFiles: '**/*.trx'
 
 
 - script: dotnet pack --configuration $(buildConfiguration) /p:PackageVersion='1.$(Build.BuildId).0'
-  displayName: Generate nuget package
   inputs:
     projects: '**/*ApiFramework.csproj'
 
@@ -78,7 +75,6 @@ steps:
     #arguments: # Required when command == Custom
 
 - task: PublishBuildArtifacts@1
-  displayName: publish nuget package to artefacts
   inputs:
     pathtoPublish: '$(Build.ArtifactStagingDirectory)'
     artifactName: drop
