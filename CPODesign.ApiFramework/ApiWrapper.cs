@@ -206,7 +206,7 @@ namespace CPODesign.ApiFramework
                 http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(authorisationHeader[0], authorisationHeader[1]);
             }
 
-            PupulateCustomHeaders(http);
+            PopulateCustomHeaders(http);
 
             var result = http.GetAsync(CalculateUrl()).Result;
             this.IsRequestSuccessfull = result.IsSuccessStatusCode;
@@ -232,7 +232,7 @@ namespace CPODesign.ApiFramework
             return new Uri(this.BaseUrl, $"{EndPointUrl}");
         }
 
-        private void PupulateCustomHeaders(HttpClient http)
+        private void PopulateCustomHeaders(HttpClient http)
         {
             if (this.HttpCustomHeaders != null)
             {
