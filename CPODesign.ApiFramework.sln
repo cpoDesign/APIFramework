@@ -15,6 +15,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sources", "sources", "{5FF9
 		README.md = README.md
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleConsoleApp", "Samples\SampleConsoleApp\SampleConsoleApp.csproj", "{A776FA3A-4BC7-4589-9A3E-D1C7B283D57C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +31,10 @@ Global
 		{686581D0-822D-43B4-8C9A-CAFF4A9ED2D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{686581D0-822D-43B4-8C9A-CAFF4A9ED2D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{686581D0-822D-43B4-8C9A-CAFF4A9ED2D0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A776FA3A-4BC7-4589-9A3E-D1C7B283D57C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A776FA3A-4BC7-4589-9A3E-D1C7B283D57C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A776FA3A-4BC7-4589-9A3E-D1C7B283D57C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A776FA3A-4BC7-4589-9A3E-D1C7B283D57C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
