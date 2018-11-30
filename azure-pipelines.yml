@@ -25,7 +25,7 @@ steps:
     testResultsFiles: '**/*.trx'
 
 
-- script: dotnet pack /p:PackageVersion='1.$(Build.BuildId).0' --configuration $(buildConfiguration)  -o $(Build.ArtifactStagingDirectory)
+- script: dotnet pack /p:PackageVersion='1.0.$(Build.BuildId)' --configuration $(buildConfiguration)  -o $(Build.ArtifactStagingDirectory)
 
 #- task: DotNetCoreCLI@2
 #  inputs:
