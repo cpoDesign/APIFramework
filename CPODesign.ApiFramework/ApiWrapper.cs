@@ -18,6 +18,7 @@ namespace CPODesign.ApiFramework
         public string DefaultResponseType { get; private set; }
         public IList<CustomHeader> HttpCustomHeaders { get; private set; }
         public DataConverter DataConverter { get; private set; }
+        public IUserAuthenticationEncryption UserAuthenticationEncryption { get; private set; }
 
         private string EndPointUrl;
 
@@ -25,6 +26,7 @@ namespace CPODesign.ApiFramework
         {
             this.ApiVersion = "v1.0";
             this.ApiVersionLocation = ApiVersionLocationEnum.Url;
+            this.UserAuthenticationEncryption = new Base64EncryptionUserAuthenticationWrapper();
         }
 
         public ApiWrapper AddCustomHeaders(IList<CustomHeader> headers)
@@ -138,6 +140,25 @@ namespace CPODesign.ApiFramework
             }
 
             this.AutorisationHeaderString = authenticationString;
+
+            return this;
+        }
+
+        public ApiWrapper SetBasicAuthentication(string userName, string password)
+        {
+            if (string.IsNullOrWhiteSpace(userName))
+            {
+                throw new ArgumentException("Please provide user name", nameof(userName));
+            }
+
+            if (string.IsNullOrWhiteSpace(password))
+            {
+                throw new ArgumentException("Please provide password", nameof(password));
+            }
+
+            string encrypted = this.UserAuthenticationEncryption.EncryptUserNameAndPassword(userName, password);
+
+            this.AutorisationHeaderString = $"Basic {encrypted}";
 
             return this;
         }
