@@ -52,7 +52,21 @@ namespace ConsoleApp1.Tests.Unit
             Assert.ThrowsException<ArgumentException>(() => new ApiWrapper().SetBasicAuthentication("testing"));
         }
 
-        [TestMethod]
+		[TestMethod]
+		public void SetAuthentication_UserNameAndPwdOverride_WithPassingNullToUserName_ShouldThrowAnException()
+		{
+
+			Assert.ThrowsException<ArgumentException>(() => new ApiWrapper().SetBasicAuthentication(null,null));
+		}
+
+		[TestMethod]
+		public void SetAuthentication_UserNameAndPwdOverride_WithPassingNullToPwd_ShouldThrowAnException()
+		{
+
+			Assert.ThrowsException<ArgumentException>(() => new ApiWrapper().SetBasicAuthentication("userName", null));
+		}
+
+		[TestMethod]
         public void ApiWrapper_ShouldSetupDefaultVersionAs1Dot0_ShouldSucced()
         {
             const string expectedVersion = "v1.0";
