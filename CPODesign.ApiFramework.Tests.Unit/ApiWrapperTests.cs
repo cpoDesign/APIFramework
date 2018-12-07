@@ -123,19 +123,13 @@ namespace ConsoleApp1.Tests.Unit
             Assert.ThrowsException<ArgumentException>(() => new ApiWrapper().WithDefaultContentType(string.Empty));
         }
 
-        /// <summary>
-        /// Withes the default media type pass non supported type should throw argument exception.
-        /// </summary>
         [TestMethod]
         public void WithDefaultMediaType_PassSupportedType_ShouldSetDefaultRequestMediaType()
         {
             var api = new ApiWrapper().WithDefaultContentType();
             Assert.AreEqual("application/json", api.DefaultRequestType);
         }
-
-        /// <summary>
-        /// Withes the default media type pass non supported type should throw argument exception.
-        /// </summary>
+        
         [TestMethod]
         public void WithDefaultMediaType_PassSupportedType_ShouldSetDefaultResponseType()
         {
@@ -151,20 +145,6 @@ namespace ConsoleApp1.Tests.Unit
             Assert.AreEqual("application/xml", api.DefaultResponseType);
         }
 
-        //[TestMethod]
-        //public void SetEndPointUrl_PassValidString_ShouldPass()
-        //{
-        //    const string restaurant = "restaurant";
-        //    const string baseUrl = "https://www.dummy.com/";
-
-        //    string ParsedUrl = $"{baseUrl}{restaurant}";
-        //    var apiWrappper = new ApiWrapper()
-        //        .SetBaseUrl(baseUrl)
-        //        .SetEndpointUrl(restaurant);
-
-        //    Assert.AreEqual(ParsedUrl.ToString(), apiWrappper..ToString());
-        //}
-
         [TestMethod]
         public void AddCustomHeaders_PassNullParamenter_ShouldReturnArgumentNullException()
         {
@@ -175,22 +155,6 @@ namespace ConsoleApp1.Tests.Unit
         public void AddCustomHeader_PassEmptyNameParamenter_ShouldReturnArgumentNullException()
         {
             Assert.ThrowsException<ArgumentException>(() => new ApiWrapper().AddCustomHeader(new CustomHeader(string.Empty, string.Empty)));
-        }
-
-        [Ignore]
-        [TestMethod]
-        public void AddCustomHeader_PassInvalidCustomHeader_ShouldReturnArgumentNullException()
-        {
-            //var wrapper = new ApiWrapper().AddCustomHeaders(new List<CustomHeaders>);
-
-            /*
-             *  if (headers == null)
-            {
-                throw new ArgumentNullException("Please provide headers", nameof(headers));
-            }
-
-            return this;
-            */
         }
     }
 }

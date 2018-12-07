@@ -11,12 +11,11 @@
 
 
 ## Quick implementation guide
-``` c#
-string basicAuthorisationString = "Basic VGVBaRRlD3Q6bkQ2NGxXVjZraDAw";
 
+```c#
 var searcher = new ApiWrapper()
     .SetBaseUrl("http://testingendpoint/api/")
-    .SetBasicAuthentication(basicAuthorisationString)
+    .SetBasicAuthentication("username", "password")
     .SetApiVersion("v1.0")
     .WithDefaultContentType(ContentTypes.ApplicationJson)
     .SetEndpointUrl("/SendMessage")
@@ -35,4 +34,4 @@ else
 {
     var responseInfo = searcher.GetResponseInformation();
 }
-            ```
+```

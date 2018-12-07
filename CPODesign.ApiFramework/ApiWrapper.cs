@@ -1,8 +1,9 @@
-﻿using ConsoleCPODesign.ApiFrameworkApp1;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using CPODesign.ApiFramework.DataConverters;
+using CPODesign.ApiFramework.Encryption;
 
 namespace CPODesign.ApiFramework
 {
@@ -144,6 +145,17 @@ namespace CPODesign.ApiFramework
             return this;
         }
 
+        /// <summary>
+        /// Sets basic authentication using username and password where password.
+        /// </summary>
+        /// <param name="userName">Username provided for basic authentication</param>
+        /// <param name="password">Password can be provided as empty string but cannot be null</param>
+        /// <returns>Instance of an object</returns>
+        /// <exception cref="System.ArgumentException">
+        /// Please provide a authentication string - authenticationString
+        /// or
+        /// BaseAuthentication expect space between two strings - authenticationString
+        /// </exception>
         public ApiWrapper SetBasicAuthentication(string userName, string password)
         {
             if (string.IsNullOrWhiteSpace(userName))
@@ -151,7 +163,7 @@ namespace CPODesign.ApiFramework
                 throw new ArgumentException("Please provide user name", nameof(userName));
             }
 
-            if (string.IsNullOrWhiteSpace(password))
+            if (password == null)
             {
                 throw new ArgumentException("Please provide password", nameof(password));
             }

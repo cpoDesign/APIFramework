@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace CPODesign.ApiFramework
+﻿namespace CPODesign.ApiFramework.Encryption
 {
     public interface IUserAuthenticationEncryption
     {

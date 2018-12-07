@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CPODesign.ApiFramework
+namespace CPODesign.ApiFramework.Encryption
 {
     public class Base64EncryptionUserAuthenticationWrapper : IUserAuthenticationEncryption
     {
