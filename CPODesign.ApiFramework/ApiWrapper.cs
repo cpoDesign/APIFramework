@@ -145,6 +145,25 @@ namespace CPODesign.ApiFramework
             return this;
         }
 
+        public ApiWrapper SetBasicAuthentication(string userName, string password)
+        {
+            if (string.IsNullOrWhiteSpace(userName))
+            {
+                throw new ArgumentException("Please provide user name", nameof(userName));
+            }
+
+            if (string.IsNullOrWhiteSpace(password))
+            {
+                throw new ArgumentException("Please provide password", nameof(password));
+            }
+
+            string encrypted = this.UserAuthenticationEncryption.EncryptUserNameAndPassword(userName, password);
+
+            this.AutorisationHeaderString = $"Basic {encrypted}";
+
+            return this;
+        }
+
         /// <summary>
         /// Sets basic authentication using username and password where password.
         /// </summary>
