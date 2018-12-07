@@ -123,19 +123,13 @@ namespace ConsoleApp1.Tests.Unit
             Assert.ThrowsException<ArgumentException>(() => new ApiWrapper().WithDefaultContentType(string.Empty));
         }
 
-        /// <summary>
-        /// Withes the default media type pass non supported type should throw argument exception.
-        /// </summary>
         [TestMethod]
         public void WithDefaultMediaType_PassSupportedType_ShouldSetDefaultRequestMediaType()
         {
             var api = new ApiWrapper().WithDefaultContentType();
             Assert.AreEqual("application/json", api.DefaultRequestType);
         }
-
-        /// <summary>
-        /// Withes the default media type pass non supported type should throw argument exception.
-        /// </summary>
+        
         [TestMethod]
         public void WithDefaultMediaType_PassSupportedType_ShouldSetDefaultResponseType()
         {

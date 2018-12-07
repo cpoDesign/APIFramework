@@ -6,19 +6,16 @@
 
 [![DepShield Badge](https://depshield.sonatype.org/badges/cpoDesign/APIFramework/depshield.svg)](https://depshield.github.io)
 
-
-## Nuget package link:
+## Nuget package link
 
 [<https://www.nuget.org/packages/CPODesign.ApiFramework/>]
 
 ## Quick implementation guide
-``` c#
-string basicAuthorisationString = "Basic VGVBaRRlD3Q6bkQ2NGxXVjZraDAw";
 
+```c#
 var searcher = new ApiWrapper()
     .SetBaseUrl("http://testingendpoint/api/")
-    .SetBasicAuthentication(basicAuthorisationString)
-	.SetBasicAuthentication("username", "password")
+    .SetBasicAuthentication("username", "password")
     .SetApiVersion("v1.0")
     .WithDefaultContentType(ContentTypes.ApplicationJson)
     .SetEndpointUrl("/SendMessage")
@@ -37,4 +34,4 @@ else
 {
     var responseInfo = searcher.GetResponseInformation();
 }
-			```
+```
