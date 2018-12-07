@@ -1,9 +1,9 @@
-using CPODesign.ApiFramework;
+using CPODesign.ApiFramework.Tests.Unit.TestingResources;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 
-namespace ConsoleApp1.Tests.Unit
+namespace CPODesign.ApiFramework.Tests.Unit
 {
     [TestClass]
     public class ApiWrapperTests
@@ -52,28 +52,28 @@ namespace ConsoleApp1.Tests.Unit
             Assert.ThrowsException<ArgumentException>(() => new ApiWrapper().SetBasicAuthentication("testing"));
         }
 
-		[TestMethod]
-		public void SetAuthentication_UserNameAndPwdOverride_WithPassingNullToUserName_ShouldThrowAnException()
-		{
+        [TestMethod]
+        public void SetAuthentication_UserNameAndPwdOverride_WithPassingNullToUserName_ShouldThrowAnException()
+        {
 
-			Assert.ThrowsException<ArgumentException>(() => new ApiWrapper().SetBasicAuthentication(null,null));
-		}
+            Assert.ThrowsException<ArgumentException>(() => new ApiWrapper().SetBasicAuthentication(null, null));
+        }
 
-		[TestMethod]
-		public void SetAuthentication_UserNameAndPwdOverride_WithPassingNullToPwd_ShouldThrowAnException()
-		{
-			Assert.ThrowsException<ArgumentException>(() => new ApiWrapper().SetBasicAuthentication("userName", null));
-		}
+        [TestMethod]
+        public void SetAuthentication_UserNameAndPwdOverride_WithPassingNullToPwd_ShouldThrowAnException()
+        {
+            Assert.ThrowsException<ArgumentException>(() => new ApiWrapper().SetBasicAuthentication("userName", null));
+        }
 
         [TestMethod]
         public void SetAuthentication_UserNameAndPassword_SouldSuccessfullySetAuthenticationValue()
         {
             const string ecryptedValue = "Basic dXNlcjpwYXNzd29yZA==";
-            var apiWrappper = new ApiWrapper().SetBasicAuthentication("user","password");
+            var apiWrappper = new ApiWrapper().SetBasicAuthentication("user", "password");
             Assert.AreEqual(ecryptedValue, apiWrappper.AutorisationHeaderString);
         }
 
-		[TestMethod]
+        [TestMethod]
         public void ApiWrapper_ShouldSetupDefaultVersionAs1Dot0_ShouldSucced()
         {
             const string expectedVersion = "v1.0";
@@ -129,7 +129,7 @@ namespace ConsoleApp1.Tests.Unit
             var api = new ApiWrapper().WithDefaultContentType();
             Assert.AreEqual("application/json", api.DefaultRequestType);
         }
-        
+
         [TestMethod]
         public void WithDefaultMediaType_PassSupportedType_ShouldSetDefaultResponseType()
         {
@@ -155,6 +155,23 @@ namespace ConsoleApp1.Tests.Unit
         public void AddCustomHeader_PassEmptyNameParamenter_ShouldReturnArgumentNullException()
         {
             Assert.ThrowsException<ArgumentException>(() => new ApiWrapper().AddCustomHeader(new CustomHeader(string.Empty, string.Empty)));
+        }
+
+        [TestMethod]
+        public void OverrideUserAuthenticationEncryption_PassNull_ShouldReturnNullReferenceException()
+        {
+            Assert.ThrowsException<ArgumentNullException>(() => new ApiWrapper().OverrideUserAuthenticationEncryption(null));
+        }
+
+        [TestMethod]
+        public void OverrideUserAuthenticationEncryption_PassOverride_ShouldApplyChangesIntoHeader()
+        {
+            const string ecryptedValue = "Basic user-password";
+            var apiWrappper = new ApiWrapper()
+                .OverrideUserAuthenticationEncryption(new TestEncryption())
+                .SetBasicAuthentication("user", "password");
+            Assert.AreEqual(ecryptedValue, apiWrappper.AutorisationHeaderString);
+
         }
     }
 }

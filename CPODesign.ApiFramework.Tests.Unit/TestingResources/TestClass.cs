@@ -1,4 +1,4 @@
-﻿namespace ConsoleApp1.Tests.Unit
+﻿namespace CPODesign.ApiFramework.Tests.Unit.TestingResources
 {
     internal class TestClass
     {
