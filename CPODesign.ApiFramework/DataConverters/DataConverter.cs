@@ -1,6 +1,4 @@
-﻿using CPODesign.ApiFramework;
-using CPODesign.ApiFramework.Enums;
-using CPODesign.ApiFramework.Enums;
+﻿using CPODesign.ApiFramework.Enums;
 using Newtonsoft.Json;
 using System;
 
