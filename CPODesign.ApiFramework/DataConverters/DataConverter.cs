@@ -1,9 +1,8 @@
-﻿using CPODesign.ApiFramework;
-using CPODesign.ApiFramework.Enums;
+﻿using CPODesign.ApiFramework.Enums;
 using Newtonsoft.Json;
 using System;
 
-namespace ConsoleCPODesign.ApiFrameworkApp1
+namespace CPODesign.ApiFramework.DataConverters
 {
     /// <summary>
     /// Custom data converter
@@ -36,10 +35,5 @@ namespace ConsoleCPODesign.ApiFrameworkApp1
                     throw new NotImplementedException();
             }
         }
-    }
-
-    public interface IDataConverter
-    {
-        T Convert<T>(string resultStr, ConversionType conversionType = ConversionType.JSON);
     }
 }

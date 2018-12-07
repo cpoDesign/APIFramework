@@ -1,5 +1,4 @@
-﻿using ConsoleCPODesign.ApiFrameworkApp1;
-using CPODesign.ApiFramework;
+﻿using CPODesign.ApiFramework.DataConverters;
 using CPODesign.ApiFramework.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;

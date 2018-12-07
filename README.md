@@ -18,6 +18,7 @@ string basicAuthorisationString = "Basic VGVBaRRlD3Q6bkQ2NGxXVjZraDAw";
 var searcher = new ApiWrapper()
     .SetBaseUrl("http://testingendpoint/api/")
     .SetBasicAuthentication(basicAuthorisationString)
+	.SetBasicAuthentication("username", "password")
     .SetApiVersion("v1.0")
     .WithDefaultContentType(ContentTypes.ApplicationJson)
     .SetEndpointUrl("/SendMessage")
