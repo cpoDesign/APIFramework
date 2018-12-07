@@ -175,6 +175,18 @@ namespace CPODesign.ApiFramework
             return this;
         }
 
+        public ApiWrapper OverrideUserAuthenticationEncryption(IUserAuthenticationEncryption userAuthenticationEncryption)
+        {
+            if (userAuthenticationEncryption == null)
+            {
+                throw new ArgumentNullException(nameof(userAuthenticationEncryption));
+            }
+
+            this.UserAuthenticationEncryption = userAuthenticationEncryption;
+
+            return this;
+        }
+
         /// <summary>
         /// Sets the API version for Header (Accept-Version)
         /// Default version is set to v1.0

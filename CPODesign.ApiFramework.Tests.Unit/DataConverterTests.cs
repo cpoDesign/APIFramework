@@ -2,8 +2,9 @@
 using CPODesign.ApiFramework.DataConverters;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using CPODesign.ApiFramework.Tests.Unit.TestingResources;
 
-namespace ConsoleApp1.Tests.Unit
+namespace CPODesign.ApiFramework.Tests.Unit
 {
     [TestClass]
     public class DataConverterTests
