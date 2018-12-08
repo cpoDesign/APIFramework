@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using CPODesign.ApiFramework.DataConverters;
 using CPODesign.ApiFramework.Encryption;
+using CPODesign.ApiFramework.Enums;
 
 namespace CPODesign.ApiFramework
 {

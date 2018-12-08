@@ -1,4 +1,4 @@
-﻿namespace ConsoleApp1
+﻿namespace CPODesign.ApiFramework.Enums
 {
     public class ContentTypes
     {
