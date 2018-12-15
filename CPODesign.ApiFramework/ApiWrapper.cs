@@ -24,10 +24,13 @@ namespace CPODesign.ApiFramework
 
         private string EndPointUrl;
 
+        public bool IsApiEndpoint { get; private set; }
+
+        private bool useAPIVersioning = false;
+
         public ApiWrapper()
         {
-            this.ApiVersion = "v1.0";
-            this.ApiVersionLocation = ApiVersionLocationEnum.Url;
+            this.ApiVersionLocation = ApiVersionLocationEnum.None;
             this.UserAuthenticationEncryption = new Base64EncryptionUserAuthenticationWrapper();
         }
 
@@ -207,6 +210,8 @@ namespace CPODesign.ApiFramework
 
             this.ApiVersion = apiVersionString;
             this.ApiVersionLocation = versionLocation;
+            this.useAPIVersioning = true;
+
             return this;
         }
 
@@ -214,7 +219,9 @@ namespace CPODesign.ApiFramework
         /// Sets the endpoint URL.
         /// </summary>
         /// <param name="sitesEndPoint">The sites end point.</param>
-        /// <returns></returns>
+        /// <returns>
+        /// Instance of it self with defined endpoint
+        /// </returns>
         /// <exception cref="System.ArgumentException">Please enter valid endpoint - search</exception>
         /// <exception cref="System.NullReferenceException">BaseUrl has not been provided</exception>
         /// <exception cref="UriFormatException">Sites endpoint is not valid to create a valid url</exception>
@@ -235,6 +242,39 @@ namespace CPODesign.ApiFramework
         }
 
         /// <summary>
+        /// Sets API endpoint.
+        /// </summary>
+        /// <param name="apiEndpoint">The sites end point.</param>
+        /// <param name="useAPIVersioning">Override switch to use api versioning in call</param>
+        /// <returns>
+        /// Instance of it self with defined Web API Version
+        /// </returns>
+        /// <exception cref="System.ArgumentException">Please enter valid endpoint - search</exception>
+        /// <exception cref="System.NullReferenceException">BaseUrl has not been provided</exception>
+        /// <exception cref="UriFormatException">Sites endpoint is not valid to create a valid url</exception>
+        public ApiWrapper SetWebApiEndpointUrl(string apiEndpoint)
+        {
+            if (string.IsNullOrWhiteSpace(apiEndpoint))
+            {
+                throw new ArgumentException("Please enter valid endpoint", nameof(apiEndpoint));
+            }
+
+            if (this.BaseUrl == null)
+            {
+                throw new NullReferenceException("BaseUrl has not been provided");
+            }
+            if (apiEndpoint.StartsWith("/"))
+            {
+                apiEndpoint = apiEndpoint.Substring(1, apiEndpoint.Length - 1);
+            }
+
+            this.IsApiEndpoint = true;
+            this.useAPIVersioning = true;
+            this.EndPointUrl = apiEndpoint;
+            return this;
+        }
+
+        /// <summary>
         /// Searches the restaurant.
         /// </summary>
         /// <typeparam name="T"></typeparam>
@@ -242,7 +282,7 @@ namespace CPODesign.ApiFramework
         /// <param name="cuisine">The cuisine.</param>
         /// <param name="restaurantName">Name of the restaurant.</param>
         /// <returns>parsed object</returns>
-        public T ExecuteApiCall<T>(string postCode, string cuisine = "", string restaurantName = "")
+        public T ExecuteApiCall<T>()
         {
             HttpClient http = new HttpClient();
 
@@ -268,14 +308,44 @@ namespace CPODesign.ApiFramework
             return (T)Activator.CreateInstance(typeof(T));
         }
 
-        private Uri CalculateUrl()
+        public Uri CalculateUrl()
         {
-            if (this.ApiVersionLocation == ApiVersionLocationEnum.Url)
+            string computedEndPoint = string.Empty;
+
+            computedEndPoint = EndPointUrl.Replace("//", "/");
+
+            //if (this.ApiVersionLocation == ApiVersionLocationEnum.Url)
+            //{
+
+            //    if (this.useAPIVersioning)
+            //    {
+            //        if (!EndPointUrl.Contains($"api/{ApiVersion}"))
+            //        return new Uri(this.BaseUrl, $"api/{ApiVersion}/{EndPointUrl}");
+            //    }
+            //    else
+            //    {
+            //        this.EndPointUrl = $"api/{EndPointUrl}";
+            //    }
+            //}
+            //else if (this.ApiVersionLocation == ApiVersionLocationEnum.None)
+            //{
+            //    this.EndPointUrl = $"api/{EndPointUrl}";
+            //}
+
+
+            if (this.useAPIVersioning && this.ApiVersionLocation == ApiVersionLocationEnum.Url)
             {
-                return new Uri(this.BaseUrl, $"{ApiVersion}/{EndPointUrl}");
+                computedEndPoint = $"{this.ApiVersion}/{computedEndPoint}";
             }
 
-            return new Uri(this.BaseUrl, $"{EndPointUrl}");
+            if (this.IsApiEndpoint)
+            {
+                computedEndPoint = $"api/{computedEndPoint}";
+            }
+
+            var completedUrl = new Uri(this.BaseUrl, computedEndPoint);
+
+            return completedUrl;
         }
 
         private void PopulateCustomHeaders(HttpClient http)
