@@ -2,6 +2,7 @@
 {
     public enum ApiVersionLocationEnum
     {
+        None,
         Url,
         Header
     }

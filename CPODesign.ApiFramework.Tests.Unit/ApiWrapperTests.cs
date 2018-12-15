@@ -118,6 +118,48 @@ namespace CPODesign.ApiFramework.Tests.Unit
         }
 
         [TestMethod]
+        public void SetWebApiEndpointUrl_PassEmptyUrl_ShouldThrowException()
+        {
+            Assert.ThrowsException<ArgumentException>(() => new ApiWrapper().SetWebApiEndpointUrl(string.Empty));
+        }
+
+        [TestMethod]
+        public void SetWebApiEndpointUrl_PassNullUrl_ShouldThrowException()
+        {
+            Assert.ThrowsException<ArgumentException>(() => new ApiWrapper().SetWebApiEndpointUrl(null));
+        }
+
+        [TestMethod]
+        public void SetWebApiEndpointUrl_PassEndpoingUrl_ShouldConstructFullUrlWithoutApiVersion()
+        {
+            const string expectedUrl = "http://www.contoso.com/api/Users";
+
+            var configured = new ApiWrapper()
+                            .SetBaseUrl("http://www.contoso.com")
+                            .SetWebApiEndpointUrl("/Users");
+
+            var url = configured.CalculateUrl();
+
+            Assert.AreEqual(expectedUrl, url.ToString());
+        }
+
+        [TestMethod]
+        public void SetWebApiEndpointUrl_PassEndpoingUrl_ShouldcCnstructFullUrlWithApiVersion()
+        {
+
+            const string expectedUrl = "http://www.contoso.com/api/v1/Users";
+
+            var configured = new ApiWrapper()
+                            .SetBaseUrl("http://www.contoso.com")
+                            .SetApiVersion("v1")
+                            .SetWebApiEndpointUrl("/Users");
+
+            var url = configured.CalculateUrl();
+
+            Assert.AreEqual(expectedUrl, url.ToString());
+        }
+
+        [TestMethod]
         public void WithDefaultMediaType_WithoutContentType_ShouldThrowArgumentException()
         {
             Assert.ThrowsException<ArgumentException>(() => new ApiWrapper().WithDefaultContentType(string.Empty));
