@@ -12,26 +12,38 @@
 
 ## Quick implementation guide
 
+1. Install nuget package **CPODesign.APIFramework**
+1. Copy the code below
+1. Update and use in your project
+
 ```c#
-var searcher = new ApiWrapper()
-    .SetBaseUrl("http://testingendpoint/api/")
-    .SetBasicAuthentication("username", "password")
-    .SetApiVersion("v1.0")
-    .WithDefaultContentType(ContentTypes.ApplicationJson)
-    .SetEndpointUrl("/SendMessage")
-    .AddCustomHeaders(new List<CustomHeader> {
-        new CustomHeader(name: "Content-type", value: ContentTypes.ApplicationJson)
-    });
+ var usersManager = new ApiWrapper()
+                .SetBaseUrl("https://localhost:44364/")
+                .InstallDataConverter(new CPODesign.ApiFramework.DataConverters.DataConverter())
+                .WithDefaultContentType(ContentTypes.ApplicationJson)
+                .AddCustomHeaders(new List<CustomHeader> {
+                    new CustomHeader(name: "Content-type", value: ContentTypes.ApplicationJson),
+                    new CustomHeader(name: "Accept", value: ContentTypes.ApplicationJson)
+                });
 
-string jsonBody = "{\"key\":\"value\"}";
-ResponseCallObject results = searcher.ExecuteApiCall<ResponseCallObject>(jsonBody);
+            var userList = usersManager.SetWebApiEndpointUrl("/user");
 
-if (searcher.IsRequestSuccessfull)
-{
-    Console.WriteLine($"do your work");
-}
-else
-{
-    var responseInfo = searcher.GetResponseInformation();
-}
+            Console.WriteLine("Getting user list from " + userList.CalculateUrl().ToString());
+            var userListResult = userList.ExecuteApiCall<List<UserListItem>>();
+            Console.WriteLine($"Received {userListResult.Count} records");
+
+            foreach (var user in userListResult)
+            {
+                Console.WriteLine($"Getting information for {user.Id}");
+
+                var userDetailConfiguration = usersManager.SetWebApiEndpointUrl($"/user/{user.Id}");
+
+                var userDetail = userDetailConfiguration.ExecuteApiCall<User>();
+
+                Console.WriteLine($"UserID: {userDetail.Id} - Name: {userDetail.Name} - Surname: {userDetail.Surname}");
+            };
+
+            Console.WriteLine("Completed");
 ```
+
+We have added a Sample folder with dummy application and console implementation for you to have a look at and get you to working solution fast.
