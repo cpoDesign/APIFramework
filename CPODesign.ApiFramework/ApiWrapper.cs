@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text;
 using CPODesign.ApiFramework.DataConverters;
 using CPODesign.ApiFramework.Encryption;
 using CPODesign.ApiFramework.Enums;
@@ -58,12 +59,7 @@ namespace CPODesign.ApiFramework
 
         public ApiWrapper InstallDataConverter(DataConverter dataConverter)
         {
-            if (dataConverter == null)
-            {
-                throw new ArgumentNullException(nameof(dataConverter));
-            }
-
-            this.DataConverter = dataConverter;
+            this.DataConverter = dataConverter ?? throw new ArgumentNullException(nameof(dataConverter));
             return this;
         }
 
@@ -181,12 +177,7 @@ namespace CPODesign.ApiFramework
 
         public ApiWrapper OverrideUserAuthenticationEncryption(IUserAuthenticationEncryption userAuthenticationEncryption)
         {
-            if (userAuthenticationEncryption == null)
-            {
-                throw new ArgumentNullException(nameof(userAuthenticationEncryption));
-            }
-
-            this.UserAuthenticationEncryption = userAuthenticationEncryption;
+            this.UserAuthenticationEncryption = userAuthenticationEncryption ?? throw new ArgumentNullException(nameof(userAuthenticationEncryption));
 
             return this;
         }
@@ -277,61 +268,73 @@ namespace CPODesign.ApiFramework
         /// <summary>
         /// Searches the restaurant.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="postCode">The post code.</param>
-        /// <param name="cuisine">The cuisine.</param>
-        /// <param name="restaurantName">Name of the restaurant.</param>
+        /// <typeparam name="T">Object to conver the result into.</typeparam>
+        /// <param name="httpMethod">Method type to use for the request.</param>
+        /// <param name="content">Content to sent to the endpoint.</param>
         /// <returns>parsed object</returns>
-        public T ExecuteApiCall<T>()
+        public async System.Threading.Tasks.Task<T> ExecuteApiCallAsync<T>(HttpMethod httpMethod, string content = null)
         {
             HttpClient http = new HttpClient();
 
-            if (!string.IsNullOrWhiteSpace(this.AutorisationHeaderString))
+            PopulateCustomHeaders(http);
+            HttpRequestMessage request = new HttpRequestMessage(httpMethod, CalculateUrl());
+            HttpResponseMessage response = null;
+
+            var requestUri = CalculateUrl();
+
+            switch (httpMethod.Method)
             {
-                var authorisationHeader = AutorisationHeaderString.Split(" ");
-                http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(authorisationHeader[0], authorisationHeader[1]);
+                case "POST":
+                    response = http.PostAsync(requestUri, CreateContentForRequest(content)).Result;
+                    break;
+                case "PUT":
+                    response = http.PutAsync(requestUri, CreateContentForRequest(content)).Result;
+                    break;
+                case "DELETE":
+                    response = http.DeleteAsync(requestUri).Result;
+
+                    //    return await DeleteAsync(client, requestUri, parameters);
+                    break;
+                default:
+                    response = http.GetAsync(requestUri).Result;
+                    break;
             }
 
-            PopulateCustomHeaders(http);
+            ////switch (httpMethod.Method)
+            ////{
+            ////    case "POST":
+            ////    case HttpMethod m when m == HttpMethod.Put:
+            ////        return await PutAsync(client, url, data);
+            ////    case HttpMethod m when m == HttpMethod.Delete:
+            ////        return await DeleteAsync(client, url, parameters);
+            ////    default:
+            ////        return await GetAsync(client, url, parameters);
+            ////}
 
-            var result = http.GetAsync(CalculateUrl()).Result;
-            this.IsRequestSuccessfull = result.IsSuccessStatusCode;
-            this.HttpResponse = result;
-            if (result.IsSuccessStatusCode)
+
+            //= await http.SendAsync(request);
+
+            this.IsRequestSuccessfull = response.IsSuccessStatusCode;
+            this.HttpResponse = response;
+            if (response.IsSuccessStatusCode)
             {
                 if (this.DataConverter != null)
                 {
-                    return this.DataConverter.Convert<T>(result.Content.ReadAsStringAsync().Result);
+                    return this.DataConverter.Convert<T>(response.Content.ReadAsStringAsync().Result);
                 }
             }
 
             return (T)Activator.CreateInstance(typeof(T));
         }
 
+        private HttpContent CreateContentForRequest(string content)
+        {
+            return new StringContent(content, UnicodeEncoding.UTF8, "application/json");
+        }
+
         public Uri CalculateUrl()
         {
-            string computedEndPoint = string.Empty;
-
-            computedEndPoint = EndPointUrl.Replace("//", "/");
-
-            //if (this.ApiVersionLocation == ApiVersionLocationEnum.Url)
-            //{
-
-            //    if (this.useAPIVersioning)
-            //    {
-            //        if (!EndPointUrl.Contains($"api/{ApiVersion}"))
-            //        return new Uri(this.BaseUrl, $"api/{ApiVersion}/{EndPointUrl}");
-            //    }
-            //    else
-            //    {
-            //        this.EndPointUrl = $"api/{EndPointUrl}";
-            //    }
-            //}
-            //else if (this.ApiVersionLocation == ApiVersionLocationEnum.None)
-            //{
-            //    this.EndPointUrl = $"api/{EndPointUrl}";
-            //}
-
+            string computedEndPoint = CleanUrl(EndPointUrl);
 
             if (this.useAPIVersioning && this.ApiVersionLocation == ApiVersionLocationEnum.Url)
             {
@@ -343,13 +346,22 @@ namespace CPODesign.ApiFramework
                 computedEndPoint = $"api/{computedEndPoint}";
             }
 
-            var completedUrl = new Uri(this.BaseUrl, computedEndPoint);
+            return new Uri(this.BaseUrl, CleanUrl(computedEndPoint));
+        }
 
-            return completedUrl;
+        private string CleanUrl(string urlString)
+        {
+            return urlString.Replace("//", "/");
         }
 
         private void PopulateCustomHeaders(HttpClient http)
         {
+            if (!string.IsNullOrWhiteSpace(this.AutorisationHeaderString))
+            {
+                var authorisationHeader = AutorisationHeaderString.Split(" ");
+                http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(authorisationHeader[0], authorisationHeader[1]);
+            }
+
             if (this.HttpCustomHeaders != null)
             {
                 foreach (var customHeader in this.HttpCustomHeaders)

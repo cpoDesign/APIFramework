@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="CPODesign.ApiFramework" Version="1.0.859" />
+    <ProjectReference Include="..\..\CPODesign.ApiFramework\CPODesign.ApiFramework.csproj" />
   </ItemGroup>
 
 </Project>

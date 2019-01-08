@@ -1,13 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.168
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28315.86
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sample", "Sample", "{9328414F-7A46-49DB-9F65-B4FF0AC65BDF}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DemoApp", "DemoApp\DemoApp.csproj", "{E6054A01-316F-4756-B9A6-B6B066294962}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ImplementationExample", "ImplementationExample\ImplementationExample.csproj", "{66FFB47D-E684-447B-A313-6EC6F7F7458B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CPODesign.ApiFramework", "..\CPODesign.ApiFramework\CPODesign.ApiFramework.csproj", "{BFA7BFA5-5C77-4B95-84E7-D82FF023D300}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,6 +25,10 @@ Global
 		{66FFB47D-E684-447B-A313-6EC6F7F7458B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{66FFB47D-E684-447B-A313-6EC6F7F7458B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{66FFB47D-E684-447B-A313-6EC6F7F7458B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BFA7BFA5-5C77-4B95-84E7-D82FF023D300}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BFA7BFA5-5C77-4B95-84E7-D82FF023D300}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BFA7BFA5-5C77-4B95-84E7-D82FF023D300}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BFA7BFA5-5C77-4B95-84E7-D82FF023D300}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
