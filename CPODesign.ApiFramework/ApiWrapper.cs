@@ -292,27 +292,11 @@ namespace CPODesign.ApiFramework
                     break;
                 case "DELETE":
                     response = http.DeleteAsync(requestUri).Result;
-
-                    //    return await DeleteAsync(client, requestUri, parameters);
                     break;
                 default:
                     response = http.GetAsync(requestUri).Result;
                     break;
             }
-
-            ////switch (httpMethod.Method)
-            ////{
-            ////    case "POST":
-            ////    case HttpMethod m when m == HttpMethod.Put:
-            ////        return await PutAsync(client, url, data);
-            ////    case HttpMethod m when m == HttpMethod.Delete:
-            ////        return await DeleteAsync(client, url, parameters);
-            ////    default:
-            ////        return await GetAsync(client, url, parameters);
-            ////}
-
-
-            //= await http.SendAsync(request);
 
             this.IsRequestSuccessfull = response.IsSuccessStatusCode;
             this.HttpResponse = response;
