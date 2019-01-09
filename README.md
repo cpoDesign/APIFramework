@@ -17,7 +17,10 @@
 1. Update and use in your project
 
 ```c#
- var usersManager = new ApiWrapper()
+ Console.WriteLine("Press any key to start executing sample against demo app project");
+            Console.ReadKey();
+
+            var usersManager = new ApiWrapper()
                 .SetBaseUrl("https://localhost:44364/")
                 .InstallDataConverter(new CPODesign.ApiFramework.DataConverters.DataConverter())
                 .WithDefaultContentType(ContentTypes.ApplicationJson)
@@ -29,7 +32,7 @@
             var userList = usersManager.SetWebApiEndpointUrl("/user");
 
             Console.WriteLine("Getting user list from " + userList.CalculateUrl().ToString());
-            var userListResult = userList.ExecuteApiCall<List<UserListItem>>();
+            var userListResult = await userList.ExecuteApiCallAsync<List<UserListItem>>(HttpMethod.Get);
             Console.WriteLine($"Received {userListResult.Count} records");
 
             foreach (var user in userListResult)
@@ -38,10 +41,31 @@
 
                 var userDetailConfiguration = usersManager.SetWebApiEndpointUrl($"/user/{user.Id}");
 
-                var userDetail = userDetailConfiguration.ExecuteApiCall<User>();
+                var userDetail = await userDetailConfiguration.ExecuteApiCallAsync<User>(HttpMethod.Get);
 
                 Console.WriteLine($"UserID: {userDetail.Id} - Name: {userDetail.Name} - Surname: {userDetail.Surname}");
             };
+
+            /* Sample for posting to the api */
+
+            var postDataConfiguration = userList.SetWebApiEndpointUrl("/User");
+            var objToSend = new User() { Id = 3, Name = "Luke", Surname = "Skywalker" };
+
+            Console.WriteLine($"Posting a new user {objToSend.Id}");
+            await postDataConfiguration.ExecuteApiCallAsync<User>(HttpMethod.Post, JsonConvert.SerializeObject(objToSend));
+            Console.WriteLine($"POST: have been: {postDataConfiguration.HttpResponse.StatusCode}");
+
+            var deleteDataConfiguration = userList.SetWebApiEndpointUrl("/User/123");
+            Console.WriteLine($"DELETE a new user {objToSend.Id}");
+            await deleteDataConfiguration.ExecuteApiCallAsync<User>(HttpMethod.Delete);
+            Console.WriteLine($"DELETE: have been: {postDataConfiguration.HttpResponse.StatusCode}");
+
+
+            var putDataConfiguration = userList.SetWebApiEndpointUrl("/User/123");
+            Console.WriteLine($"PUT a new user {objToSend.Id}");
+            await putDataConfiguration.ExecuteApiCallAsync<User>(HttpMethod.Put, JsonConvert.SerializeObject(objToSend));
+            Console.WriteLine($"PUT: have been: {postDataConfiguration.HttpResponse.StatusCode}");
+
 
             Console.WriteLine("Completed");
 ```
